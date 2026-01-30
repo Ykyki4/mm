@@ -1,0 +1,36 @@
+#:kivy 1.2
+
+<LoginPage1>
+    BoxLayout:
+        id: login_layout
+        orientation: 'vertical'
+        padding: [10,50,10,50]
+        spacing: 50
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                font_size: 18
+                text_size: root.width-20, 20
+                halign: 'left'
+                color: "#000000"
+                text: "username:"
+            TextInput:
+                id: username
+                multiline:False
+                font_size: 28
+                size_hint: (.5, .2)
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                font_size: 18
+                text_size: root.width-20, 20
+                halign: 'left'
+                color: "#000000"
+                text: "password:"
+            TextInput:
+                id: password
+                password: True
+                multiline: False
+                font_size: 28
+                size_hint: (.5, .2)
+        BoxLayout:

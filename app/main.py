@@ -7,7 +7,6 @@ from app.sales.routes import router as sales_router
 
 async def lifespan(app):
     async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
     print("on")
     yield

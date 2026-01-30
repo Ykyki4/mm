@@ -1,2 +1,5 @@
 .venv/
 .idea/
+desktop/.buildozer/
+desktop/path/
+desktop/venv/

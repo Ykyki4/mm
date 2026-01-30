@@ -27,5 +27,5 @@ class Sale(SQLModel, table=True):
 class Invoice(SQLModel, table=True):
     id: int = Field(primary_key=True)
     sale_id: int = Field(foreign_key="sale.id")
-    sale: User = Relationship(back_populates="invoices")
+    sale: Sale = Relationship(back_populates="invoices")
     created_at: datetime = Field(default_factory=datetime.now)

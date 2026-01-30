@@ -1,7 +1,7 @@
 from typing import Generator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlmodel import SQLModel
+from sqlalchemy.orm import sessionmaker
 
 SERVER = '(localdb)\MSSQLLocalDB'
 DATABASE = 'test'
@@ -19,17 +19,25 @@ connection_url_obj = sa.engine.URL.create(
 
 engine = create_async_engine(connection_url_obj)
 
-SessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
+async_session_factory = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
 
 
 def get_db_without_generator():
-    db = SessionLocal()
+    db = async_session_factory()
     return db
 
 
-def get_db() -> Generator[AsyncSession, None, None]:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+async def get_db() -> Generator[AsyncSession, None, None]:
+    async with async_session_factory() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
